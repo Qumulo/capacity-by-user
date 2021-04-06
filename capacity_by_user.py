@@ -7,6 +7,8 @@ import sys
 import ssl
 import heapq
 from argparse import ArgumentParser
+from functools import cmp_to_key
+from operator import attrgetter
 from multiprocessing import Pool
 
 class SampleTreeNode:
@@ -63,8 +65,7 @@ class SampleTreeNode:
             result += "(%s)" % (format_samples(self.sum_samples),)
 
         next_indent = indent + (is_last and "    " or "|   ")
-        sorted_children = sorted(self.children.values(),
-                                 lambda x, y: cmp(x.name, y.name))
+        sorted_children = sorted(self.children.values(), key=attrgetter('name'))
         for child in sorted_children[:-1]:
             result += "\n" + child.__str__(
                 next_indent, format_samples, False)
@@ -230,8 +231,9 @@ def main(args):
                 return "%s" % pretty_print_capacity((mean) * total_capacity_used)
 
     print "Total: %s" % (format_capacity(args.samples))
-    sorted_owners = sorted(owners.items(),
-                           lambda x, y: cmp(y[1].sum_samples, x[1].sum_samples))
+    sort_fn = lambda x, y: y[1].sum_samples - x[1].sum_samples
+    sorted_owners = sorted(owners.items(), ket=cmp_to_key(sort_fn))
+
     # For each owner, print total used, then refine the tree and dump it.
     for name, tree in sorted_owners:
         print "Owner %s (~%0.1f%%/%s)" % (
