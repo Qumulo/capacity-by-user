@@ -218,8 +218,8 @@ def main(args):
                 return (
                     (mean + adjust) 
                     * total_capacity_used
-                    / bytes_per_terabyte *
-                    args.dollars_per_terabyte
+                    / bytes_per_terabyte
+                    * args.dollars_per_terabyte
                 )
             if args.confidence_interval:
                 return "[$%0.02f-$%0.02f]/month" % (to_dollars(-confidence),
