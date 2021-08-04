@@ -162,7 +162,7 @@ def get_samples(pool, credentials, args):
 
 def get_owner_vec(pool, credentials, samples, args):
     file_ids = [s["id"] for s in samples]
-    sublists = [(credentials, file_ids[i:i+100]) for i in xrange(0, args.samples, 100)]
+    sublists = [(credentials, file_ids[i:i+100]) for i in range(0, args.samples, 100)]
     owner_id_sublists = pool.map(get_file_attrs, sublists)
     return sum(owner_id_sublists, [])
 
