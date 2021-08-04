@@ -253,12 +253,13 @@ def main(args):
         print("Owner %s (~%0.1f%%/%s)" % (
             name, tree.sum_samples / float(args.samples) * 100,
             format_capacity(tree.sum_samples)))
-        tree.prune_until(max_leaves=args.max_leaves,
-                         min_samples=args.min_samples)
-        if "" in tree.children:
-            print(tree.children[""].__str__("    ", lambda x: format_capacity(x)))
-        else:
-            print(tree.__str__("    ", lambda x: format_capacity(x)))
+        if args.fancy_output:  # XXX ezra: This didn't seem very useful to me.
+            tree.prune_until(max_leaves=args.max_leaves,
+                             min_samples=args.min_samples)
+            if "" in tree.children:
+                print(tree.children[""].__str__("    ", lambda x: format_capacity(x)))
+            else:
+                print(tree.__str__("    ", lambda x: format_capacity(x)))
 
 def process_command_line(args):
     parser = ArgumentParser()
@@ -297,6 +298,9 @@ def process_command_line(args):
 
     parser.add_argument("-A", "--allow-self-signed-server", action="store_true",
         help="Silently connect to self-signed servers")
+
+    parser.add_argument("--fancy-output", action="store_true",
+        help="Organize each output item into a 'pruned' path tree")
 
     parser.add_argument("path", help="Filesystem path to sample")
 
