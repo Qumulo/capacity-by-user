@@ -239,7 +239,7 @@ def main(args):
 
     print("Total: %s" % (format_capacity(args.samples)))
     sort_fn = lambda x, y: y[1].sum_samples - x[1].sum_samples
-    sorted_owners = sorted(owners.items(), ket=cmp_to_key(sort_fn))
+    sorted_owners = sorted(owners.items(), key=cmp_to_key(sort_fn))
 
     # For each owner, print total used, then refine the tree and dump it.
     for name, tree in sorted_owners:
