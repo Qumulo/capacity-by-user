@@ -143,15 +143,14 @@ def get_file_attrs(x):
     client.login(credentials["user"], credentials["password"])
     result = []
     for path in paths:
-        if seen.has_key(path):
+        if file_id in seen:
             result += [seen[path]]
             continue
         attrs = client.fs.get_file_attr(path)
         str_owner = translate_owner_to_owner_string(client
-                                                          , attrs['owner']
-                                                          , attrs['owner_details']['id_type']
-                                                          , attrs['owner_details']['id_value'])
-        seen[path] = str_owner
+                                                   , attrs['owner']
+                                                   , attrs['owner_details']['id_type']
+                                                   , attrs['owner_details']['id_value'])
         result.append(str_owner)
     return result
 
