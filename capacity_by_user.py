@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from qumulo.rest_client import RestClient
+import getpass
 import os
 import pwd
 import sys
@@ -172,6 +173,9 @@ def main(args):
                    "cluster" : args.cluster,
                    "port" : args.port}
 
+    if credentials["password"] is None:
+        credentials["password"] = getpass.getpass(f"Password for {credentials['user']}: ")
+
     if args.allow_self_signed_server:
         try:
             _create_unverified_https_context = ssl._create_unverified_context
@@ -184,7 +188,7 @@ def main(args):
 
     # Qumulo API login
     client = RestClient(args.cluster, args.port)
-    client.login(args.user, args.password)
+    client.login(credentials["user"], credentials["password"])
 
     total_capacity_used = int(
         client.fs.read_dir_aggregates(args.path)['total_capacity'])
@@ -251,10 +255,10 @@ def main(args):
 
 def process_command_line(args):
     parser = ArgumentParser()
-    parser.add_argument("-U", "--user", default="admin",
+    parser.add_argument("-U", "--user", required=True,
             help="The user to connect as (default: %(default)s)")
 
-    parser.add_argument("-P", "--password", default="admin",
+    parser.add_argument("-P", "--password",
         help="The password to connect with (default: %(default)s)")
 
     parser.add_argument("-C", "--cluster", default="qumulo",
