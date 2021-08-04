@@ -20,6 +20,13 @@ class SampleTreeNode:
         self.sum_samples = 0
         self.children = {}
 
+    def __lt__(self, other):
+        if self.parent is None and other.parent is not None:
+            return True
+        if self.parent is not None and other.parent is None:
+            return False
+        return (self.parent, self.samples, self.name, self.sum_samples) <  (other.parent, other.samples, other.name, other.sum_samples)
+
     def insert(self, name, samples):
         self.insert_internal(name.split("/"), samples)
 
