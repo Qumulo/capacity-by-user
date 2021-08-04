@@ -86,7 +86,7 @@ def get_samples_worker(x):
     credentials, path, n = x
     client = RestClient(credentials["cluster"], credentials["port"])
     client.login(credentials["user"], credentials["password"])
-    return client.fs.get_file_samples(path=path, count=n, by_value="capacity")
+    return client.fs.get_file_samples(path=path, count=int(n), by_value="capacity")
 
 class memoize:
   def __init__(self, function):
