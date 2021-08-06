@@ -268,7 +268,7 @@ def process_command_line(args):
             help="The user to connect as (default: %(default)s)")
 
     parser.add_argument("-P", "--password",
-        help="The password to connect with (default: %(default)s)")
+        help="The password for the specified user. If not specified, you will be prompted later.")
 
     parser.add_argument("-C", "--cluster", default="qumulo",
         help="The hostname of the cluster to connect to (default: %(default)s)")
