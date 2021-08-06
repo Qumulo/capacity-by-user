@@ -159,7 +159,7 @@ def get_file_attrs(x):
                                                    , attrs['owner']
                                                    , attrs['owner_details']['id_type']
                                                    , attrs['owner_details']['id_value'])
-            seen[path] = str_owner
+        seen[path] = str_owner
         result.append(str_owner)
     return result
 
