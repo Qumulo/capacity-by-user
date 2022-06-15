@@ -3,7 +3,6 @@
 from qumulo.rest_client import RestClient
 import getpass
 import os
-import pwd
 import sys
 import ssl
 import heapq
@@ -131,7 +130,9 @@ def format_owner(cli, auth_id, owner_type, owner_value):
                     continue
         if user == "":
             try:
-                user = "NFS:%s (id:%s)" % (pwd.getpwuid(int(owner_value)).pw_name, owner_value)
+            	for id in cli.auth.posix_uid_to_all_related_identities(posix_uid="owner_value"):
+            		if id['id_type'] == "LOCAL_USER":
+            			user = "NFS:%s (id:%s)" % (id['id_value'], owner_value)
             except:
                 pass
     elif owner_type == 'LOCAL_USER':
